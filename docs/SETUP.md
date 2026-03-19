@@ -1,20 +1,25 @@
-# X API 開通手順
+# X API 開通手順（2026年版）
 
-## Step 1: X Developer Portal でアカウント登録
+> ⚠️ **重要**: 2026年より Free プランが廃止されました。
+> **Pay Per Use（従量課金）への登録が必須**です。
+> ただし参加時に **$500の無料クレジット**が付与されるため実質無料で始められます。
+
+---
+
+## Step 1: Pay Per Use パイロットに参加する
 
 1. https://developer.x.com にアクセス（Xアカウントでログイン）
-2. **「Sign up for Free Account」** をクリック
-3. 利用目的を **250文字以上** で記述（日本語でも可）
+2. 左メニュー **Products → X API v2** を開く
+3. オレンジのバナー内の **「Pay Per Use」** リンクをクリック
+4. 「ペイパーユースパイロットに参加する」画面で：
+   - プロジェクト名・説明を入力（例: `X-skills-dejiina`）
+   - ユースケース: **「Making a bot」** を選択
+5. 参加申請を完了する
 
-   記述例:
-   ```
-   I am building a personal tool to automatically post scheduled content
-   to my X account using the API. I will use it to convert note.com blog
-   articles into tweet-format posts and schedule them for better engagement.
-   This is for personal use only and I will comply with all automation rules.
-   ```
+> 💡 参加後に **$500の無料クレジット**が付与されます。
+> 月100投稿（$0.01/投稿）= $1/月 なので、約40年分相当。
 
-4. 利用規約に同意 → 承認（通常即座に完了）
+新しいコンソール: https://console.x.com/accounts/
 
 ---
 
@@ -23,7 +28,7 @@
 1. ダッシュボード（https://developer.x.com/en/portal/dashboard）へ移動
 2. **「+ Create Project」** をクリック
    - Project name: 任意（例: `XSkillProject`）
-   - Use case: 「Making a bot」または「Automating posts」
+   - Use case: **「Making a bot」**
 3. **「+ Create App」** をクリック
    - App name: グローバルでユニークな名前（例: `xskill-yourname`）
 4. 表示される以下を **必ずコピー保存**（1度しか表示されない）
@@ -62,10 +67,7 @@
 
 ## Step 5: .env ファイルに設定
 
-プロジェクトルートに `.env` ファイルを作成:
-
 ```bash
-# .env.example をコピー
 cp .env.example .env
 ```
 
@@ -84,10 +86,9 @@ ACCESS_TOKEN_SECRET=取得したAccess Token Secret
 ## Step 6: テスト投稿
 
 ```bash
-# Pythonパッケージをインストール
 pip install -r requirements.txt
 
-# テスト投稿（--dry-run で確認のみ）
+# 確認のみ（投稿しない）
 python skills/note-to-x/scripts/post_to_x.py --dry-run
 
 # 実際に投稿
@@ -108,17 +109,19 @@ python skills/note-to-x/scripts/post_to_x.py
 
 | エラー | 原因 | 対処法 |
 |--------|------|--------|
+| `503 Service Unavailable` | Freeプラン廃止・クレジット未登録 | Step 1のPay Per Use登録を完了する |
 | `403 Forbidden` | App Permissionsが「Read」のまま | Step 3→4をやり直す |
 | `401 Unauthorized` | APIキーが間違っている | .envを確認・コピーミスがないか |
-| `402 CreditsDepleted` | 新規アカウントで$5未課金 | Developer Portal でクレジット購入 |
+| `401 Unauthorized` | API KeyとAccess Tokenが不一致 | Access TokenをRegenerateし直す |
 | `429 Too Many Requests` | レート制限超過 | しばらく待つ（自動リトライあり） |
 
 ---
 
-## Free Tier の制限
+## 料金（Pay Per Use）
 
-| 項目 | 制限 |
-|------|------|
-| 月間投稿数 | 500件/月（旧ユーザー）または従量課金 |
-| 読み取り | **不可**（書き込み専用） |
-| 新規アカウント | $5のクレジット購入が必要な場合あり |
+| 操作 | 単価 | 月100回の場合 |
+|------|------|------------|
+| ツイート投稿（write） | $0.01/件 | **$1/月** |
+| 初回参加ボーナス | **$500クレジット** | 約40年分相当 |
+
+> 月額固定費なし。使った分だけ課金。
