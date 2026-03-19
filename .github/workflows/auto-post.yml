@@ -36,6 +36,8 @@ on:
 jobs:
   post:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # queue.jsonの変更をpushするために必要
 
     steps:
       - name: リポジトリをチェックアウト
