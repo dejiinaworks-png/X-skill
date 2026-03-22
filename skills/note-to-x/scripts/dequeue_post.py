@@ -12,6 +12,7 @@ import sys
 import json
 import argparse
 import tweepy
+from datetime import datetime, timezone
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -134,25 +135,40 @@ def main():
 
     # 投稿済みIDを読み込み
     posted_ids = load_posted_ids()
+    now_utc = datetime.now(timezone.utc)
 
-    # 先頭1件を取得（投稿済みはスキップ）
-    item = queue[0]
-    item_id = item["id"]
+    # 投稿可能な最初のアイテムを探す
+    # 条件: 未投稿 かつ scheduled_at が未設定 or 現在時刻を過ぎている
+    ready_index = None
+    for i, q_item in enumerate(queue):
+        q_id = q_item["id"]
+        if q_id in posted_ids:
+            print(f"⚠️  [{i}] ID '{q_id}' は投稿済み → スキップ")
+            continue
+        scheduled_at = q_item.get("scheduled_at")
+        if scheduled_at:
+            scheduled_dt = datetime.fromisoformat(scheduled_at.replace("Z", "+00:00"))
+            if now_utc < scheduled_dt:
+                jst_str = (scheduled_dt.replace(tzinfo=timezone.utc).astimezone(
+                    timezone.utc).__format__("%Y-%m-%d %H:%M UTC"))
+                print(f"⏰  [{i}] ID '{q_id}' は予約時刻未達（{jst_str}）→ スキップ")
+                continue
+        ready_index = i
+        break
 
-    if item_id in posted_ids:
-        print(f"⚠️  ID '{item_id}' は投稿済みです（重複防止）。キューから削除します。")
-        if not args.dry_run:
-            queue.pop(0)
-            with open(QUEUE_FILE, "w", encoding="utf-8") as f:
-                json.dump(queue, f, ensure_ascii=False, indent=2)
-            print(f"🗑️  キューから削除。残り {len(queue)}件")
+    if ready_index is None:
+        print("📭 投稿可能なアイテムがありません（全て予約時刻未達または投稿済み）。")
         sys.exit(0)
+
+    item = queue[ready_index]
+    item_id = item["id"]
 
     text = item["text"]
     image_path = item.get("image_path")
     image_prompt = item.get("image_prompt")
 
-    print(f"📋 投稿ID: {item_id}")
+    scheduled_at = item.get("scheduled_at", "即時")
+    print(f"📋 投稿ID: {item_id}  予約時刻: {scheduled_at}")
     print(f"   残りキュー: {len(queue)}件 → 投稿後 {len(queue)-1}件")
 
     # image_prompt がある場合は画像を生成
@@ -167,7 +183,7 @@ def main():
     # dry_run でない場合のみキューから削除 & 投稿済みIDを記録
     if not args.dry_run:
         save_posted_id(item_id)
-        queue.pop(0)
+        queue.pop(ready_index)
         with open(QUEUE_FILE, "w", encoding="utf-8") as f:
             json.dump(queue, f, ensure_ascii=False, indent=2)
         print(f"🗑️  キューから削除。残り {len(queue)}件")
