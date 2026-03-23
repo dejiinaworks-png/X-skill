@@ -11,6 +11,7 @@ import os
 import sys
 import json
 import argparse
+import time
 import tweepy
 from datetime import datetime, timezone
 from pathlib import Path
@@ -41,6 +42,7 @@ def get_client_v2() -> tweepy.Client:
         consumer_secret=os.environ["API_KEY_SECRET"],
         access_token=os.environ["ACCESS_TOKEN"],
         access_token_secret=os.environ["ACCESS_TOKEN_SECRET"],
+        wait_on_rate_limit=True,  # レート制限時は自動待機
     )
 
 
@@ -71,8 +73,8 @@ def generate_image(prompt: str, output_path: str) -> bool:
     return False
 
 
-def post(text: str, image_path: str = None, dry_run: bool = False) -> str:
-    """Xに投稿。画像あり/なし両対応。ツイートIDを返す。"""
+def post(text: str, image_path: str = None, dry_run: bool = False, max_retries: int = 3) -> str:
+    """Xに投稿。画像あり/なし両対応。ツイートIDを返す。リトライあり。"""
     if dry_run:
         print(f"[DRY RUN] 投稿（{len(text)}文字）:\n{text}")
         if image_path:
@@ -93,10 +95,29 @@ def post(text: str, image_path: str = None, dry_run: bool = False) -> str:
     if media_ids:
         kwargs["media_ids"] = media_ids
 
-    response = client.create_tweet(**kwargs)
-    tweet_id = response.data["id"]
-    print(f"✅ 投稿成功: https://x.com/i/web/status/{tweet_id}")
-    return tweet_id
+    last_error = None
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = client.create_tweet(**kwargs)
+            tweet_id = response.data["id"]
+            print(f"✅ 投稿成功: https://x.com/i/web/status/{tweet_id}")
+            return tweet_id
+        except tweepy.errors.TooManyRequests as e:
+            wait = 60 * attempt
+            print(f"⚠️  レート制限 (試行{attempt}/{max_retries})。{wait}秒後にリトライ...")
+            last_error = e
+            time.sleep(wait)
+        except tweepy.errors.Forbidden as e:
+            # 重複投稿エラー（同一内容）はリトライ不要
+            print(f"❌ 投稿拒否（重複または権限不足）: {e}")
+            raise
+        except tweepy.TweepyException as e:
+            wait = 10 * attempt
+            print(f"⚠️  Twitter APIエラー (試行{attempt}/{max_retries}): {e}。{wait}秒後にリトライ...")
+            last_error = e
+            time.sleep(wait)
+
+    raise RuntimeError(f"❌ {max_retries}回リトライしても投稿失敗: {last_error}")
 
 
 def load_posted_ids() -> set:

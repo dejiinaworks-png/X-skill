@@ -2,7 +2,7 @@
   {
     "id": "antigravity-vs-claudecode-01",
     "scheduled_at": "2026-03-22T22:00:00Z",
-    "text": "2025年11月、Googleがひっそりと爆弾を投下した。\n\n「Antigravity」という名のエージェント型AI IDEだ。\n\n毎日Claude Codeを使うエンジニアとして、両方を実際に触って正直に比較した。\n\nその結論、思っていたより単純じゃなかった。\n\n↓ 記事はこちら\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#AI開発 #ClaudeCode #Antigravity",
+    "text": "「AntigravityってClaude Codeに勝てるの？」とか言いながら、実は乗り遅れるのが怖いだけの人へ。\n\nGoogleが完全無料でぶっ込んできたAI IDE、1週間本気で使い込んだ。\n\n結論：今すぐ乗り換えじゃないけど、無視できない理由がある。\n\n詳細↓\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#AI開発 #ClaudeCode #Antigravity",
     "image_prompt": null,
     "image_path": null,
     "created_at": "2026-03-22T12:00:00Z"
@@ -10,7 +10,7 @@
   {
     "id": "antigravity-vs-claudecode-02",
     "scheduled_at": "2026-03-23T03:00:00Z",
-    "text": "Antigravityが今すごい理由 3選\n\n✅ 複数AIエージェントを並列実行\n✅ ブラウザ自動テストが内蔵済み\n✅ パブリックプレビュー中で完全無料\n\nGoogleがAI IDE市場に本気で殴り込んできた。\n\nClaude Codeとの詳しい比較はこちら↓\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#Antigravity #AI開発ツール",
+    "text": "Antigravityを触って「あ、Googleが本気だな」と思った瞬間。\n\nAIエージェントを複数並列実行できる\n→ Claude Codeは基本1タスク順番待ち\n\nブラウザテストが最初から内蔵\n→ Playwrightを自前設定してた俺、何してたんだろうw\n\n完全無料（プレビュー中）\n→ いつ課金に切り替わるか不明。今のうちに触っとく価値はある。\n\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#Antigravity #AI開発ツール",
     "image_prompt": null,
     "image_path": null,
     "created_at": "2026-03-22T12:00:00Z"
@@ -18,7 +18,7 @@
   {
     "id": "antigravity-vs-claudecode-03",
     "scheduled_at": "2026-03-23T10:00:00Z",
-    "text": "AntigravityとClaude Code、どちらを使うべき？\n\n大規模コード改修 → Claude Code\n新規フロント開発 → Antigravity\n本番・安全性重視 → Claude Code\n今すぐ無料で試す → Antigravity\nチーム開発・MCP連携 → Claude Code\n自動化最優先 → Antigravity\n\n正直な判定基準を記事にまとめた↓\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#AIツール #エンジニア",
+    "text": "Claude Codeが向いてる案件\n→ 既存の大規模コード改修、本番環境・安全性重視、チーム開発・MCP連携\n\nAntigravityが向いてる案件\n→ フロントエンドの新規開発、ブラウザ動作を繰り返し確認する作業、「とにかく今すぐ無料で試したい」\n\nどちらが上じゃない。用途次第。\n\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#AIツール #エンジニア",
     "image_prompt": null,
     "image_path": null,
     "created_at": "2026-03-22T12:00:00Z"
@@ -26,7 +26,7 @@
   {
     "id": "antigravity-vs-claudecode-04",
     "scheduled_at": "2026-03-23T12:00:00Z",
-    "text": "正直な結論を言う。\n\n今すぐ業務で使うなら「Claude Code一択」\n\nでもAntigravityは、フロントエンドと自動テストの文脈で急成長する可能性が高い。\n\nGoogleのインフラ力を考えると、半年後には全く違う結論になっているかもしれない。\n\n今のうちに両方触っておくことだけは確かだ。\n\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#ClaudeCode #Antigravity",
+    "text": "正直に言う。\n\n今の業務ならClaude Code一択。コードベース全体を200kトークンで把握する力は、大きいリポジトリで特に差が出る。\n\nただ。\n\nAntigravityはフロントエンドとブラウザテスト文脈で急成長してる。Googleのインフラ力は正直脅威。\n\n半年後に「あのとき触っとけばよかった」はなりたくない。今のうちに両方知っておく価値はある。\n\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#ClaudeCode #Antigravity",
     "image_prompt": null,
     "image_path": null,
     "created_at": "2026-03-22T12:00:00Z"
@@ -34,7 +34,7 @@
   {
     "id": "antigravity-vs-claudecode-05",
     "scheduled_at": "2026-03-23T22:00:00Z",
-    "text": "AIコーディングツール戦争、整理すると\n\nClaude Code（$20/月〜）\n→ 200kトークンでコードベース丸ごと理解\n→ 安全性重視・MCP連携・チーム開発向き\n\nAntigravity（完全無料）\n→ 自律エージェント・ブラウザテスト内蔵\n→ プレビュー中・フロントエンドに強み\n\n詳細な比較はこちら↓\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#AI #開発効率化 #プログラミング",
+    "text": "Claude Code vs Antigravity、整理した。\n\nClaude Code\n→ $20/月〜 / 200kトークンでコードベース全理解 / 本番・チーム・MCP連携向き\n\nAntigravity\n→ 完全無料（プレビュー中）/ 自律エージェント並列実行 / フロントエンド・自動化向き\n\nどちらが上じゃない。「何を作るか」で使い分けるだけ。\n\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#AI #開発効率化 #プログラミング",
     "image_prompt": null,
     "image_path": null,
     "created_at": "2026-03-22T12:00:00Z"
