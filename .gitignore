@@ -34,8 +34,7 @@ venv/
 SESSION_HANDOFF.md
 
 # 生成物・一時出力
-skills/nanobanana2/output/
-skills/nanobanana2/__pycache__/
+skills/nanobanana2/
 
 # 個人用・内部リサーチ
 システムリサーチ専用.md
