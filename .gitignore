@@ -1,8 +1,9 @@
-# Secrets
+# Secrets / API Keys
 .env
 .env.local
 .env.*.local
 secrets/
+*.secret
 
 # .env.example は公開する（値なしのテンプレート）
 !.env.example
@@ -21,3 +22,20 @@ __pycache__/
 *.pyo
 .venv/
 venv/
+
+# Claude Code 内部ファイル（コミット不要）
+.agent-trace/
+.claude/temp/
+.claude/hooks/data/model-switch.log
+.claude/hooks/data/skill-guard-detail.json
+.claude/hooks/data/compact-metrics.jsonl
+.claude/hooks/data/model-recommendation.json
+.workflow_state.json
+SESSION_HANDOFF.md
+
+# 生成物・一時出力
+skills/nanobanana2/output/
+skills/nanobanana2/__pycache__/
+
+# 個人用・内部リサーチ
+システムリサーチ専用.md
