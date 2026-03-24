@@ -50,19 +50,20 @@ queue/queue.json → GitHub Actions（cron） → X API v2
 
 ## クイックスタート
 
-### 1. スプレッドシートを確認
+### 1. スプレッドシートを新規作成する
 
-本番スプレッドシート（要アクセス権）:
-```
-https://docs.google.com/spreadsheets/d/1rqYg72zy-hwkZk8IxfrYos4PAaL41LG9AVqOZeXCa94/
-シート名: X投稿
-```
+1. [Googleスプレッドシート](https://sheets.google.com) で新規シートを作成
+2. シート名を `X投稿` に変更
+3. `skills/gas-x-post/SETUP.md` の手順に従ってGASを設定
+4. 作成したスプレッドシートのIDをGASのスクリプトプロパティに設定
+
+> スプレッドシートのIDはURLの `https://docs.google.com/spreadsheets/d/【ここ】/edit` の部分です。
 
 ### 2. Claude に依頼するだけ
 
 ```
 「この記事をもとにX投稿を3本作成して、明日のスケジュールで登録してください」
-https://note.com/ina_tatsu44/n/xxxxx
+https://note.com/あなたのnoteユーザー名/n/記事ID
 ```
 
 Claude が自動で:
