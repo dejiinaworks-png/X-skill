@@ -376,27 +376,27 @@ function setupSpreadsheet() {
   const posts = [
     [
       '2026/3/23', 7, 0,
-      '「AntigravityってClaude Codeに勝てるの？」とか言いながら、実は乗り遅れるのが怖いだけの人へ。\n\nGoogleが完全無料でぶっ込んできたAI IDE、1週間本気で使い込んだ。\n\n結論：今すぐ乗り換えじゃないけど、無視できない理由がある。\n\n詳細↓\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#AI開発 #ClaudeCode #Antigravity',
+      '「AntigravityってClaude Codeに勝てるの？」とか言いながら、実は乗り遅れるのが怖いだけの人へ。\n\nGoogleが完全無料でぶっ込んできたAI IDE、1週間本気で使い込んだ。\n\n結論：今すぐ乗り換えじゃないけど、無視できない理由がある。\n\n詳細↓\nhttps://note.com/your_username/n/your_article_id\n\n#AI開発 #ClaudeCode #Antigravity',
       true, false, '', '', '', '', false, '', ''
     ],
     [
       '2026/3/23', 12, 0,
-      'Antigravityを触って「あ、Googleが本気だな」と思った瞬間。\n\nAIエージェントを複数並列実行できる\n→ Claude Codeは基本1タスク順番待ち\n\nブラウザテストが最初から内蔵\n→ Playwrightを自前設定してた俺、何してたんだろうw\n\n完全無料（プレビュー中）\n→ いつ課金に切り替わるか不明。今のうちに触っとく価値はある。\n\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#Antigravity #AI開発ツール',
+      'Antigravityを触って「あ、Googleが本気だな」と思った瞬間。\n\nAIエージェントを複数並列実行できる\n→ Claude Codeは基本1タスク順番待ち\n\nブラウザテストが最初から内蔵\n→ Playwrightを自前設定してた俺、何してたんだろうw\n\n完全無料（プレビュー中）\n→ いつ課金に切り替わるか不明。今のうちに触っとく価値はある。\n\nhttps://note.com/your_username/n/your_article_id\n\n#Antigravity #AI開発ツール',
       true, false, '', '', '', '', false, '', ''
     ],
     [
       '2026/3/23', 19, 0,
-      'Claude Codeが向いてる案件\n→ 既存の大規模コード改修、本番環境・安全性重視、チーム開発・MCP連携\n\nAntigravityが向いてる案件\n→ フロントエンドの新規開発、ブラウザ動作を繰り返し確認する作業、「とにかく今すぐ無料で試したい」\n\nどちらが上じゃない。用途次第。\n\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#AIツール #エンジニア',
+      'Claude Codeが向いてる案件\n→ 既存の大規模コード改修、本番環境・安全性重視、チーム開発・MCP連携\n\nAntigravityが向いてる案件\n→ フロントエンドの新規開発、ブラウザ動作を繰り返し確認する作業、「とにかく今すぐ無料で試したい」\n\nどちらが上じゃない。用途次第。\n\nhttps://note.com/your_username/n/your_article_id\n\n#AIツール #エンジニア',
       true, false, '', '', '', '', false, '', ''
     ],
     [
       '2026/3/23', 21, 0,
-      '正直に言う。\n\n今の業務ならClaude Code一択。コードベース全体を200kトークンで把握する力は、大きいリポジトリで特に差が出る。\n\nただ。\n\nAntigravityはフロントエンドとブラウザテスト文脈で急成長してる。Googleのインフラ力は正直脅威。\n\n半年後に「あのとき触っとけばよかった」はなりたくない。今のうちに両方知っておく価値はある。\n\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#ClaudeCode #Antigravity',
+      '正直に言う。\n\n今の業務ならClaude Code一択。コードベース全体を200kトークンで把握する力は、大きいリポジトリで特に差が出る。\n\nただ。\n\nAntigravityはフロントエンドとブラウザテスト文脈で急成長してる。Googleのインフラ力は正直脅威。\n\n半年後に「あのとき触っとけばよかった」はなりたくない。今のうちに両方知っておく価値はある。\n\nhttps://note.com/your_username/n/your_article_id\n\n#ClaudeCode #Antigravity',
       true, false, '', '', '', '', false, '', ''
     ],
     [
       '2026/3/24', 7, 0,
-      'Claude Code vs Antigravity、整理した。\n\nClaude Code\n→ $20/月〜 / 200kトークンでコードベース全理解 / 本番・チーム・MCP連携向き\n\nAntigravity\n→ 完全無料（プレビュー中）/ 自律エージェント並列実行 / フロントエンド・自動化向き\n\nどちらが上じゃない。「何を作るか」で使い分けるだけ。\n\nhttps://note.com/ina_tatsu44/n/nb88d80f03bb8\n\n#AI #開発効率化 #プログラミング',
+      'Claude Code vs Antigravity、整理した。\n\nClaude Code\n→ $20/月〜 / 200kトークンでコードベース全理解 / 本番・チーム・MCP連携向き\n\nAntigravity\n→ 完全無料（プレビュー中）/ 自律エージェント並列実行 / フロントエンド・自動化向き\n\nどちらが上じゃない。「何を作るか」で使い分けるだけ。\n\nhttps://note.com/your_username/n/your_article_id\n\n#AI #開発効率化 #プログラミング',
       true, false, '', '', '', '', false, '', ''
     ]
   ];

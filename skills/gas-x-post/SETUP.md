@@ -33,7 +33,7 @@ Googleが完全無料でぶっ込んできたAI IDE、1週間本気で使い込�
 結論：今すぐ乗り換えじゃないけど、無視できない理由がある。
 
 詳細↓
-https://note.com/ina_tatsu44/n/nb88d80f03bb8
+https://note.com/your_username/n/your_article_id
 
 #AI開発 #ClaudeCode #Antigravity	TRUE	FALSE
 2026/3/23	12	0	Antigravityを触って「あ、Googleが本気だな」と思った瞬間。
@@ -47,7 +47,7 @@ AIエージェントを複数並列実行できる
 完全無料（プレビュー中）
 → いつ課金に切り替わるか不明。今のうちに触っとく価値はある。
 
-https://note.com/ina_tatsu44/n/nb88d80f03bb8
+https://note.com/your_username/n/your_article_id
 
 #Antigravity #AI開発ツール	TRUE	FALSE
 2026/3/23	19	0	Claude Codeが向いてる案件
@@ -58,7 +58,7 @@ Antigravityが向いてる案件
 
 どちらが上じゃない。用途次第。
 
-https://note.com/ina_tatsu44/n/nb88d80f03bb8
+https://note.com/your_username/n/your_article_id
 
 #AIツール #エンジニア	TRUE	FALSE
 2026/3/23	21	0	正直に言う。
@@ -71,7 +71,7 @@ Antigravityはフロントエンドとブラウザテスト文脈で急成長し
 
 半年後に「あのとき触っとけばよかった」はなりたくない。今のうちに両方知っておく価値はある。
 
-https://note.com/ina_tatsu44/n/nb88d80f03bb8
+https://note.com/your_username/n/your_article_id
 
 #ClaudeCode #Antigravity	TRUE	FALSE
 2026/3/24	7	0	Claude Code vs Antigravity、整理した。
@@ -84,7 +84,7 @@ Antigravity
 
 どちらが上じゃない。「何を作るか」で使い分けるだけ。
 
-https://note.com/ina_tatsu44/n/nb88d80f03bb8
+https://note.com/your_username/n/your_article_id
 
 #AI #開発効率化 #プログラミング	TRUE	FALSE
 ```

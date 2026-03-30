@@ -5,10 +5,10 @@
 note記事のURLを受け取り、ナレッジに基づいてX投稿文を生成し、
 Klavis MCP経由でGoogleスプレッドシートに自動書き込みするスキル。
 
-**スプレッドシート（本番）:**
-`https://docs.google.com/spreadsheets/d/1rqYg72zy-hwkZk8IxfrYos4PAaL41LG9AVqOZeXCa94/`
+**スプレッドシート:**
+`https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID/`
 **シート名:** `X投稿`
-**Klavis Strata ID:** `889957f4-eb25-48f1-b6f2-e28fc8b1f11a`
+**Klavis Strata ID:** `YOUR_KLAVIS_STRATA_ID`
 
 ---
 
@@ -138,7 +138,7 @@ Klavis MCP経由でGoogleスプレッドシートに自動書き込みするス�
 
 **エンドポイント:**
 ```
-POST https://strata.klavis.ai/mcp/?strata_id=889957f4-eb25-48f1-b6f2-e28fc8b1f11a
+POST https://strata.klavis.ai/mcp/?strata_id=YOUR_KLAVIS_STRATA_ID
 Headers:
   Content-Type: application/json; charset=utf-8
   Accept: application/json, text/event-stream
@@ -147,7 +147,7 @@ Headers:
 **セル書き込みリクエスト（Python で JSON を組み立てる）:**
 ```python
 body = json.dumps({
-    "spreadsheet_id": "1rqYg72zy-hwkZk8IxfrYos4PAaL41LG9AVqOZeXCa94",
+    "spreadsheet_id": "YOUR_SPREADSHEET_ID",
     "column": "A",      # 列（A〜M）
     "row": 7,           # 行番号（7行目〜）
     "value": "書き込む値",
