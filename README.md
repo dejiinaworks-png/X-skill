@@ -1,159 +1,250 @@
 # X投稿くん (X-skill)
 
-X（旧Twitter）・Threads への自動投稿・スケジュール管理ツール。
+Claude（AI）に話しかけるだけで、note記事からX（旧Twitter）・Threads の投稿文を自動生成し、スプレッドシートに予約登録・自動投稿まで行うツールです。
 
 **バージョン: 2.0.0**
 
 ---
 
-## 概要
+## このツールでできること
 
-- note記事URLを渡すと、ナレッジに基づいてX投稿文を自動生成
-- Google スプレッドシートに予約投稿データを書き込み
-- GAS（Google Apps Script）が自動でX / Threads に投稿
-- Klavis MCP 経由でスプレッドシートをClaudeから直接操作可能
+1. note記事のURLを渡すと、ナレッジに基づいてX投稿文を自動生成
+2. 生成した投稿文をGoogleスプレッドシートに予約登録
+3. Google Apps Script（GAS）が指定時刻に自動でX / Threads へ投稿
+
+```
+あなた：「この記事からX投稿を3本作成して、明日の朝・昼・夜に予約してください」
+         https://note.com/あなた/n/記事ID
+
+Claude：投稿文を生成 → スプレッドシートに書き込み → GASが自動投稿
+```
+
+---
+
+## 必要なもの（前提条件）
+
+| 必要なもの | 用途 | 費用 |
+|---|---|---|
+| [Claude Code](https://claude.ai/code) または Cursor | AIとのチャット・自動操作 | $20/月〜 |
+| Google アカウント | スプレッドシート・GAS | 無料 |
+| [Klavis](https://klavis.ai) アカウント | ClaudeがシートをMCP経由で操作 | 無料プランあり |
+| X Developer アカウント | X API（自動投稿） | 従量課金（$500無料クレジット付） |
+| Threads アカウント | Threads API（任意） | 無料 |
+
+> **Claudeを使ったことがない方** → まず [Claude Code の使い方](https://docs.anthropic.com/ja/docs/claude-code/overview) を確認してください。
+
+---
+
+## セットアップ（初回）
+
+初回は以下の順番でセットアップしてください。**途中でわからなくなったら、Claudeに「セットアップを手伝ってください」と話しかければ対話形式でガイドしてもらえます。**
+
+---
+
+### Step 1: Klavis に登録してMCPを追加する
+
+ClaudeがGoogleスプレッドシートを自動操作するために必要です。
+
+#### 1-1. Klavisに登録してStrategyを作成
+
+1. [klavis.ai](https://klavis.ai) にアクセスしてアカウントを作成
+2. ダッシュボードで **「Create Strata」** をクリック
+3. 連携するサービスに **「Google Sheets」** を追加
+4. Google アカウントで認証（OAuth）
+5. 作成された **Strata ID**（`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` 形式）をコピーして保存
+
+#### 1-2. Claude Code に Klavis MCP を追加
+
+ターミナルで以下を実行（`YOUR_STRATA_ID` を Step 1-1 でコピーしたIDに置き換え）：
+
+```bash
+claude mcp add --transport sse klavis "https://strata.klavis.ai/mcp/?strata_id=YOUR_STRATA_ID"
+```
+
+追加できたか確認：
+```bash
+claude mcp list
+# → klavis が表示されればOK
+```
+
+> **Cursor の場合**: Settings → MCP → Add Server から上記URLを追加してください。
+
+---
+
+### Step 2: スプレッドシートを作成してGASを設定する
+
+詳細手順: [`skills/gas-x-post/SETUP.md`](./skills/gas-x-post/SETUP.md)
+
+#### 概要
+
+1. [Google スプレッドシート](https://sheets.google.com) で新規スプレッドシートを作成
+2. 「拡張機能」→「Apps Script」を開く
+3. [`skills/gas-x-post/Code.gs`](./skills/gas-x-post/Code.gs) の内容を全てコピー＆ペーストして保存
+4. `setupSpreadsheet` 関数を実行 → シート・ヘッダー・サンプルデータが自動作成される
+5. スクリプトプロパティにAPIキーを設定（Step 3・4 で取得）
+6. `setupTrigger` 関数を実行 → 30分ごとの自動投稿が開始
+
+---
+
+### Step 3: X API キーを取得する
+
+詳細手順: [`docs/SETUP.md`](./docs/SETUP.md)
+
+#### 概要
+
+1. [developer.x.com](https://developer.x.com) にアクセスし、Pay Per Use プランに参加
+   - 参加時に **$500の無料クレジット**が付与されます（月100投稿≒$1/月 = 約40年分）
+2. プロジェクト・アプリを作成し、APIキーを取得
+3. App Permissions を **「Read and Write」** に設定（デフォルトは Read のみ → 投稿できない）
+4. Access Token を生成
+
+取得したキーを GAS スクリプトプロパティに設定：
+
+| プロパティ名 | 内容 |
+|---|---|
+| `X_API_KEY` | API キー |
+| `X_API_SECRET` | API シークレット |
+| `X_ACCESS_TOKEN` | アクセストークン |
+| `X_ACCESS_TOKEN_SECRET` | アクセストークンシークレット |
+
+---
+
+### Step 4: Threads API トークンを取得する（任意）
+
+Threads に投稿しない場合はスキップしてください。
+
+1. [Meta for Developers](https://developers.facebook.com) でアプリを作成
+2. Threads API の権限を追加・審査申請
+3. アクセストークンを取得
+
+取得したトークンを GAS スクリプトプロパティに設定：
+
+| プロパティ名 | 内容 |
+|---|---|
+| `THREADS_ACCESS_TOKEN` | アクセストークン |
+| `THREADS_USER_ID` | 空欄でOK（初回実行時に自動取得） |
+
+---
+
+### ✅ セットアップ完了チェックリスト
+
+```
+□ Klavis アカウントを作成・Strata を作成・Google Sheets を接続した
+□ Claude Code / Cursor に Klavis MCP を追加した（claude mcp list で確認）
+□ Google スプレッドシートを作成した
+□ Code.gs を GAS に貼り付けた
+□ setupSpreadsheet() を実行してシートを初期化した
+□ X API キーを GAS スクリプトプロパティに設定した
+□ setupTrigger() を実行してトリガーを登録した
+□ dryRun() で動作確認した
+```
+
+---
+
+## 使い方
+
+セットアップ完了後は、Claude / Cursor に話しかけるだけです。
+
+### 基本的な使い方
+
+```
+「この記事からX投稿を3本作成して、明日の7時・12時・19時に予約してください」
+https://note.com/あなたのユーザー名/n/記事のID
+```
+
+Claude が自動で：
+1. 記事を取得・分析
+2. ナレッジに従って投稿文を生成（フック・文体・AI臭除去まで）
+3. Klavis MCP 経由でスプレッドシートに書き込み
+4. GAS が指定時刻に自動投稿
+
+### 活用例
+
+```
+「今週投稿する内容をまとめてスプレッドシートに入れておいて」
+「この記事から5本バリエーションを作って、来週分として登録して」
+「明日の朝7時の投稿を確認して内容を修正して」
+```
+
+---
+
+## セットアップを途中で始めた場合（対話ガイド）
+
+セットアップを完了せずに「この記事のX投稿を作って」と依頼した場合、Claude が不足している設定を検出して対話形式でガイドします。
+
+### Claude が確認すること
+
+```
+Claude：「Klavis MCP が接続されていません。以下を確認させてください。
+         1. klavis.ai でアカウントを作成しましたか？
+         2. Strata ID をお持ちですか？
+         → あればターミナルで以下を実行してください：
+         claude mcp add --transport sse klavis "https://strata.klavis.ai/mcp/?strata_id=あなたのID"」
+```
+
+```
+Claude：「X API キーが GAS に設定されていません。
+         → GAS エディタ → プロジェクトの設定 → スクリプトプロパティ
+         で X_API_KEY / X_API_SECRET / X_ACCESS_TOKEN / X_ACCESS_TOKEN_SECRET を設定してください。
+         取得方法は docs/SETUP.md を参照してください。」
+```
+
+### 途中から始める場合の推奨フロー
+
+```
+あなた：「X投稿を作りたいです」
+
+Claude：「まずセットアップ状況を確認します。
+         以下のうち、完了しているものを教えてください：
+         1. Klavis の Strata ID を取得している
+         2. Claude Code に Klavis MCP を追加している
+         3. Google スプレッドシートに Code.gs を設定している
+         4. X API キーを GAS に設定している」
+
+あなた：「1と2だけできています」
+
+Claude：「では Step 2（スプレッドシートの設定）から始めましょう。
+         skills/gas-x-post/SETUP.md の手順に沿って進めます。
+         [Googleスプレッドシート](https://sheets.google.com) を開いてください。」
+```
+
+> **ポイント：** 完全なセットアップが終わっていなくても投稿文の生成だけはできます。スプレッドシートへの書き込みが必要な場合のみ Klavis MCP が必要です。
 
 ---
 
 ## アーキテクチャ
 
-### v2.0（現行）: GAS + スプレッドシート + Claude
-
 ```
-[Claude（X投稿くん）]
-  ↓ note記事URL を受け取る
-  ↓ ナレッジに基づいて投稿文を生成
-  ↓ Klavis MCP でスプレッドシートに書き込み
+あなた（note記事URL + 依頼）
         ↓
-[Googleスプレッドシート]（投稿データ管理）
+Claude（X投稿くん）
+  ├─ 記事取得（WebFetch）
+  ├─ 投稿文生成（ナレッジ適用）
+  └─ スプレッドシート書き込み（Klavis MCP）
         ↓
-[Google Apps Script]（30分ごとに自動実行）
+Googleスプレッドシート（投稿データ管理）
         ↓
-[X API v2 / Threads API]（自動投稿）
+Google Apps Script（30分ごとに自動チェック）
+        ↓
+X API v2 / Threads API（自動投稿）
 ```
-
-**メリット:**
-- git push 不要・状態管理がシートのセルで完結
-- Google インフラのため cron 遅延なし
-- スプレッドシートで投稿内容を直接確認・編集可能
-- Claude から Klavis MCP 経由でシートを操作可能
-
-### v1（GitHub Actions）
-
-```
-queue/queue.json → GitHub Actions（cron） → X API v2
-```
-
-現在はバックアップとして残存。`.github/workflows/auto-post.yml` 参照。
-
----
-
-## クイックスタート
-
-### 1. スプレッドシートを新規作成する
-
-1. [Googleスプレッドシート](https://sheets.google.com) で新規シートを作成
-2. シート名を `X投稿` に変更
-3. `skills/gas-x-post/SETUP.md` の手順に従ってGASを設定
-4. 作成したスプレッドシートのIDをGASのスクリプトプロパティに設定
-
-> スプレッドシートのIDはURLの `https://docs.google.com/spreadsheets/d/【ここ】/edit` の部分です。
-
-### 2. Claude に依頼するだけ
-
-```
-「この記事をもとにX投稿を3本作成して、明日のスケジュールで登録してください」
-https://note.com/あなたのnoteユーザー名/n/記事ID
-```
-
-Claude が自動で:
-1. 記事を取得
-2. ナレッジ（`skills/x-post-writer/SKILL.md`）に従って投稿文生成
-3. スプレッドシートの空き行に書き込み
-4. GASが自動投稿
-
----
-
-## GAS セットアップ手順（初回のみ）
-
-詳細: `skills/gas-x-post/SETUP.md`
-
-### 必要なもの
-
-- Google アカウント
-- X Developer App（API キー4つ）
-- Threads API アクセストークン（Threads 投稿する場合）
-
-### APIキーの設定場所
-
-**GASエディタ**の「プロジェクトの設定」→「スクリプトプロパティ」に設定する。
-コードには書かない。GitHubには絶対にアップロードしない。
-
-| プロパティ名 | 内容 |
-|---|---|
-| X_API_KEY | X の API キー |
-| X_API_SECRET | X の API シークレット |
-| X_ACCESS_TOKEN | X のアクセストークン |
-| X_ACCESS_TOKEN_SECRET | X のアクセストークンシークレット |
-| THREADS_ACCESS_TOKEN | Threads のアクセストークン |
-| THREADS_USER_ID | 空欄でOK（初回実行時に自動取得） |
-
-### セットアップ手順
-
-1. スプレッドシートを開く
-2. 「拡張機能」→「Apps Script」
-3. `skills/gas-x-post/Code.gs` の内容を全て貼り付けて保存
-4. スクリプトプロパティにAPIキーを設定
-5. `setupTrigger` を実行 → 30分ごとの自動実行が開始
 
 ---
 
 ## スプレッドシート列構成
 
-| 列 | 内容 | 備考 |
+| 列 | 内容 | 入力者 |
 |---|---|---|
-| A | 投稿日 | 例: 2026/3/25 |
-| B | 時 | 0〜23 |
-| C | 分 | 0〜59 |
-| D | 投稿内容 | テキスト本文 |
-| E | X投稿する | TRUE/FALSE |
-| F | Threads投稿する | TRUE/FALSE |
-| G〜J | 画像1〜4 URL | 任意 |
-| K | 投稿済み | GASが自動更新 |
-| L | X投稿URL | GASが自動記入 |
-| M | Threads投稿URL | GASが自動記入 |
-
----
-
-## 投稿コンテンツ作成ワークフロー
-
-`skills/x-post-writer/SKILL.md` に完全なワークフローを定義。
-
-### 6ステップ
-
-1. **記事取得** - WebFetch で本文・タイトル・キーワードを取得
-2. **インサイト分析** - ターゲットの本音・潜在的欲求を掘り下げる
-3. **フック選択** - 50パターンから毎回異なるパターンを選択
-4. **投稿文生成** - 文体DNA・100点法則に従って生成
-5. **AI臭除去チェック** - 20項目チェックリストを通過
-6. **スプレッドシート書き込み** - Klavis MCP 経由で自動書き込み
-
-### ナレッジ一覧
-
-| ファイル | 内容 |
-|---|---|
-| `00_インサイト分析手法.md` | ターゲットの本音を暴く手法 |
-| `01_文体DNA.md` | 人間らしい文体の再現方法 |
-| `02_フック50パターン.md` | 冒頭フック50パターン集 |
-| `03_長文構造.md` | 3000字投稿の14ブロック構造 |
-| `04_AI臭除去.md` | AI臭をなくすルール・NGワード集 |
-| `05_対比パターン完全ガイド.md` | 対比型投稿の作り方 |
-| `06_既視感ゼロ戦略.md` | 独自の切り口の作り方 |
-| `07_繰り返し回避ルール.md` | 同じ表現を使わないルール |
-| `08_100点ポストの絶対法則.md` | 高品質投稿の8法則 |
-| `09_ポストデザイン理論.md` | 視覚的なポスト設計 |
-| `10_フローチャート単独型パターン.md` | フロー形式の投稿パターン |
-| `11_箇条書き単独型パターン.md` | 箇条書き形式の投稿パターン |
+| A | 投稿日（例: 2026/4/1） | Claude / 手動 |
+| B | 時（0〜23） | Claude / 手動 |
+| C | 分（0〜59） | Claude / 手動 |
+| D | 投稿内容（本文） | Claude / 手動 |
+| E | X投稿する（TRUE/FALSE） | Claude / 手動 |
+| F | Threads投稿する（TRUE/FALSE） | Claude / 手動 |
+| G〜J | 画像URL（任意） | Claude / 手動 |
+| K | 投稿済み | GAS が自動更新 |
+| L | X投稿URL | GAS が自動記入 |
+| M | Threads投稿URL | GAS が自動記入 |
 
 ---
 
@@ -167,36 +258,59 @@ X投稿くん/
 │   │   └── knowledge/          # 投稿品質向上ナレッジ（12ファイル）
 │   ├── gas-x-post/             # GAS自動投稿スクリプト
 │   │   ├── Code.gs             # GASスクリプト本体
-│   │   └── SETUP.md            # セットアップ詳細手順
-│   └── note-to-x/              # note記事→X投稿変換（補助）
-├── docs/                       # ドキュメント類
+│   │   └── SETUP.md            # GASセットアップ詳細手順
+│   └── note-to-x/              # note記事→X投稿変換スクリプト（補助）
+├── docs/
+│   ├── SETUP.md                # X APIキー取得手順
+│   └── GITHUB_ACTIONS_SETUP.md # GitHub Actions設定（v1バックアップ）
 ├── .github/
 │   └── workflows/
-│       └── auto-post.yml       # GitHub Actions（バックアップ）
+│       └── auto-post.yml       # GitHub Actions（バックアップ・通常は不使用）
 ├── .gitignore
-└── README.md
+├── LICENSE
+└── README.md                   # このファイル
 ```
 
 ---
 
-## Mac / 別PCへの引き継ぎ方法
+## 別環境（Mac・別PC）への引き継ぎ
 
-GitHub からクローンするだけで環境を引き継げます。
+リポジトリをクローンすればコードは引き継げます。
 
 ```bash
 git clone https://github.com/dejiinaworks-png/X-skill.git
 cd X-skill
 ```
 
-**ただし、以下は GitHub に保存されていないため別途設定が必要:**
+以下は GitHub に保存されていないため、別途再設定が必要です：
 
 | 項目 | 保存場所 | 引き継ぎ方法 |
-|------|---------|------------|
-| X APIキー | GASスクリプトプロパティ | スプレッドシートはGoogle上にあるので自動引き継ぎ |
-| Threads APIキー | GASスクリプトプロパティ | 同上 |
-| Klavis MCP設定 | Claude Code（`claude mcp list`） | Macの Claude Code で `claude mcp add` を再実行 |
+|---|---|---|
+| X / Threads APIキー | GAS スクリプトプロパティ | スプレッドシートはGoogle上にあるため自動引き継ぎ |
+| Klavis MCP | Claude Code / Cursor の設定 | 新しい環境で `claude mcp add` を再実行 |
 
-**GASとスプレッドシートはGoogle上にあるので、スプレッドシートのURLさえ分かれば引き継ぎ済みです。**
+**再実行コマンド（Strata IDは変わらない）：**
+```bash
+claude mcp add --transport sse klavis "https://strata.klavis.ai/mcp/?strata_id=あなたのSTRATA_ID"
+```
+
+> スプレッドシート・GAS はGoogle上にあるため、スプレッドシートのURLさえわかれば引き継ぎ不要です。
+
+---
+
+## よくある質問
+
+**Q: 投稿が自動で送信されない**
+→ GAS のトリガーが設定されているか確認（`setupTrigger` を再実行）。投稿日時が現在より過去になっているかも確認。
+
+**Q: ClaudeがシートにAI書き込みができない**
+→ `claude mcp list` で klavis が表示されているか確認。表示されていなければ Step 1-2 をやり直す。
+
+**Q: X投稿で403エラーが出る**
+→ X Developer Portal で App Permissions が「Read and Write」になっているか確認。Readのままだと投稿できない。Access Token を再生成する必要がある。
+
+**Q: Threads 投稿URLが「URL取得失敗」になる**
+→ 投稿自体は成功しています。Threads API の仕様でURLの取得に失敗することがあります。
 
 ---
 

@@ -1,4 +1,7 @@
-# GitHub Actions 自動投稿 セットアップ
+# GitHub Actions 自動投稿 セットアップ（v1・バックアップ用）
+
+> ⚠️ **このドキュメントはv1（GitHub Actions方式）の手順です。**
+> 現在の推奨はv2（GAS方式）です。通常は [`skills/gas-x-post/SETUP.md`](../skills/gas-x-post/SETUP.md) を使用してください。
 
 ## 投稿スケジュール（日本時間）
 
@@ -17,7 +20,7 @@
 
 ## GitHub Secrets の設定（初回のみ）
 
-1. https://github.com/dejiinaworks-png/X-skill/settings/secrets/actions を開く
+1. `https://github.com/あなたのユーザー名/X-skill/settings/secrets/actions` を開く
 2. 「New repository secret」で以下を追加：
 
 | Secret名 | 値の場所 |
