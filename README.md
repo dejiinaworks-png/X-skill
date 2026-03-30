@@ -207,3 +207,16 @@ cd X-skill
 ## 開発ログ
 
 変更履歴は [Issues](https://github.com/dejiinaworks-png/X-skill/issues) を参照。
+
+---
+
+## ライセンス
+
+Copyright (c) 2026 株式会社デジイナ
+
+本ソフトウェアは **MIT No-Redistribution License** の下で提供されます。
+
+- 個人的・社内業務的な利用は**許可**されています
+- 第三者への配布・再配布・販売・サブライセンスは**禁止**されています
+
+詳細は [LICENSE](./LICENSE) ファイルをご確認ください。
