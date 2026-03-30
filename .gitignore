@@ -31,6 +31,10 @@ SESSION_HANDOFF.md
 
 # 生成物・一時出力
 skills/nanobanana2/
+media/
+queue/
 
-# 個人用・内部リサーチ
-システムリサーチ専用.md
+# 内部ドキュメント・システム設定
+要件定義書_X投稿スキル.md
+.mcp.json
+skills/ナレッジ/

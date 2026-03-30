@@ -165,18 +165,14 @@ X投稿くん/
 │   ├── x-post-writer/          # 投稿文生成スキル（メイン）
 │   │   ├── SKILL.md            # ワークフロー定義・運用ルール
 │   │   └── knowledge/          # 投稿品質向上ナレッジ（12ファイル）
-│   ├── gas-x-post/             # GAS自動投稿スクリプト（v2.0 現行）
+│   ├── gas-x-post/             # GAS自動投稿スクリプト
 │   │   ├── Code.gs             # GASスクリプト本体
 │   │   └── SETUP.md            # セットアップ詳細手順
-│   ├── note-to-x/              # note記事→X投稿変換（補助）
-│   └── ナレッジ/               # 旧ナレッジ格納場所（x-post-writerに移行済み）
-├── queue/                      # v1用キューデータ
-│   ├── queue.json
-│   └── posted_ids.json
+│   └── note-to-x/              # note記事→X投稿変換（補助）
 ├── docs/                       # ドキュメント類
 ├── .github/
 │   └── workflows/
-│       └── auto-post.yml       # v1 GitHub Actions（バックアップ）
+│       └── auto-post.yml       # GitHub Actions（バックアップ）
 ├── .gitignore
 └── README.md
 ```
